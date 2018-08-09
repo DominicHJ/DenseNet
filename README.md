@@ -2,8 +2,8 @@
 
 ### 代码功能   
 使用slim框架复现论文《Densely Connected Convolutional Networks》中的DenseNet网络  
-![](./ImageforReadme/1.jpg '验证集图片1') 
-![](./ImageforReadme/1.jpg '验证集图片1') 
+![](./pic/densenet1.png 'densenet1')   
+![](./pic/densenet2.png 'densenet2')   
 
 ### DenseNet简介   
 1）densenet实现分析  
@@ -12,7 +12,7 @@
 - 每个block之间通过transition layers进行连接，整个网络的feature map空间尺寸在这些transition layers中依次减小。每个block最终输出的feature map通道数为growth0 + growth * layers，虽然内部有bottleneck进行通道数的限制，但整个block最终输出的feature map通道数依旧很大，transition layers通过1x1的卷积对通道数进行降维（融合了每个block输出的各个通道），再通过2x2的平均池化对空间尺寸进行降维，使输入到下一个block的feature map达到一个合理的特征尺寸  
 - 在最后一个block输出时，使用7x7的全局平均池化，将整个feature map的尺寸变成一个长条形的1x1xN的特征向量，并在全连接后用于softmax进行分类
 - 论文中所涉及到的卷积，实际上是一个复合操作，包含了BN（批归一化） - RELU（激活） - conv（卷积） - dropout（随机失活）  
-![](./ImageforReadme/1.jpg '验证集图片1') 
+![](./pic/densenet3.png 'densenet3')   
 
 2）growth rate  
 - 论文中提出的参数growth rate（增长率K）关联与整个densenet的中每个阶段的feature map通道数的变化（K的值是个超参数，本代码中为24），通道数的变化以K为一个单位，进行整数倍的增加，应用于所有进行通道数变换的操作，如最开始的初始化卷积操作使用2growth，block内部的bottleneck layers使用4growth，block内部的3x3卷积使用1growth，而transition layer中的卷积操作使用1growth。 growth控制着整个网络的宽度（避免通道数增长太快），选择小的growth可以让网络变窄，计算的参数数量也会减少。  
@@ -26,5 +26,5 @@ dense block的结构可以使feature得到更有效的利用，而且由于增�
 
 
 
-框架参考  https://github.com/tensorflow/models/tree/master/research/slim
-论文参考 [《Densely Connected Convolutional Networks》](https://arxiv.org/abs/1608.06993)
+框架参考  https://github.com/tensorflow/models/tree/master/research/slim   
+论文参考 [《Densely Connected Convolutional Networks》](https://arxiv.org/abs/1608.06993)   
