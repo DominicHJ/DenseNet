@@ -15,7 +15,7 @@
 ![](./pic/densenet3.png 'densenet3')   
 
 2）growth rate  
-- 论文中提出的参数growth rate（增长率K）关联与整个densenet的中每个阶段的feature map通道数的变化（K的值是个超参数，本代码中为24），通道数的变化以K为一个单位，进行整数倍的增加，应用于所有进行通道数变换的操作，如最开始的初始化卷积操作使用2growth，block内部的bottleneck layers使用4growth，block内部的3x3卷积使用1growth，而transition layer中的卷积操作使用1growth。 growth控制着整个网络的宽度（避免通道数增长太快），选择小的growth可以让网络变窄，计算的参数数量也会减少。  
+- 论文中提出的参数growth rate（增长率K）关联与整个densenet的中每个阶段的feature map通道数的变化（K的值是个超参数，本代码中为24），通道数的变化以K为一个单位，进行整数倍的增加，应用于所有进行通道数变换的操作，如最开始的初始化卷积操作使用2growth，block内部的3x3卷积使用1growth，bottleneck layer使用4*growth rate限制通道数，而transition layer中的卷积操作使用reduction参数（取值0~1之前的比例）来控制通道数。 growth控制着整个网络的宽度（避免通道数增长太快），选择小的growth可以让网络变窄，计算的参数数量也会减少。  
   
 3）densenet网络的优势  
 - resnet：xl=H(xl-1)+(xl-1)  
